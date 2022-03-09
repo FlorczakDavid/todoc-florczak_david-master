@@ -1,5 +1,6 @@
 package com.cleanup.todoc.ui;
 
+import android.app.Activity;
 import android.content.res.ColorStateList;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,8 +10,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Database;
 
 import com.cleanup.todoc.R;
+import com.cleanup.todoc.model.AppDatabase;
 import com.cleanup.todoc.model.Project;
 import com.cleanup.todoc.model.Task;
 
@@ -34,12 +37,16 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHold
     @NonNull
     private final DeleteTaskListener deleteTaskListener;
 
+    private AppDatabase database;
+    private Activity context;
+
     /**
      * Instantiates a new TasksAdapter.
      *
      * @param tasks the list of tasks the adapter deals with to set
      */
-    TasksAdapter(@NonNull final List<Task> tasks, @NonNull final DeleteTaskListener deleteTaskListener) {
+    TasksAdapter(Activity context, @NonNull final List<Task> tasks, @NonNull final DeleteTaskListener deleteTaskListener) {
+       this.context = context;
         this.tasks = tasks;
         this.deleteTaskListener = deleteTaskListener;
     }
@@ -63,6 +70,7 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHold
 
     @Override
     public void onBindViewHolder(@NonNull TaskViewHolder taskViewHolder, int position) {
+        database = AppDatabase.getDbInstance(context);
         taskViewHolder.bind(tasks.get(position));
     }
 

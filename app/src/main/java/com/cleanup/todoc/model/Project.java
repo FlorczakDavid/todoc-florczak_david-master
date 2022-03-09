@@ -1,31 +1,41 @@
 package com.cleanup.todoc.model;
 
 
+import static androidx.room.ForeignKey.CASCADE;
+
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.ForeignKey;
+import androidx.room.PrimaryKey;
 
 /**
  * <p>Models for project in which tasks are included.</p>
  *
  * @author Gaëtan HERFRAY
  */
+@Entity
 public class Project {
     /**
      * The unique identifier of the project
      */
+    @PrimaryKey
     private final long id;
 
     /**
      * The name of the project
      */
     @NonNull
+    @ColumnInfo(name = "project_name")
     private final String name;
 
     /**
      * The hex (ARGB) code of the color associated to the project
      */
     @ColorInt
+    @ColumnInfo(name = "color_int_code")
     private final int color;
 
     /**
@@ -35,7 +45,7 @@ public class Project {
      * @param name  the name of the project to set
      * @param color the hex (ARGB) code of the color associated to the project to set
      */
-    private Project(long id, @NonNull String name, @ColorInt int color) {
+    public Project(long id, @NonNull String name, @ColorInt int color) {
         this.id = id;
         this.name = name;
         this.color = color;

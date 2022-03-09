@@ -1,8 +1,14 @@
 package com.cleanup.todoc.model;
 
 
+import static androidx.room.ForeignKey.CASCADE;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.ForeignKey;
+import androidx.room.PrimaryKey;
 
 import java.util.Comparator;
 
@@ -11,10 +17,16 @@ import java.util.Comparator;
  *
  * @author Gaëtan HERFRAY
  */
+@Entity(foreignKeys = @ForeignKey(entity = Project.class,
+        parentColumns = "id",
+        childColumns = "projectId",
+        onDelete = CASCADE)
+)
 public class Task {
     /**
      * The unique identifier of the task
      */
+    @PrimaryKey
     private long id;
 
     /**
@@ -28,11 +40,13 @@ public class Task {
     // Suppress warning because setName is called in constructor
     @SuppressWarnings("NullableProblems")
     @NonNull
+    @ColumnInfo(name = "task_name")
     private String name;
 
     /**
      * The timestamp when the task has been created
      */
+    @ColumnInfo(name = "task_creation_timestamp")
     private long creationTimestamp;
 
     /**
@@ -153,5 +167,13 @@ public class Task {
         public int compare(Task left, Task right) {
             return (int) (left.creationTimestamp - right.creationTimestamp);
         }
+    }
+
+    public long getCreationTimestamp() {
+        return creationTimestamp;
+    }
+
+    public long getProjectId() {
+        return projectId;
     }
 }
